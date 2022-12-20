@@ -31,7 +31,7 @@ export const createDocumentFromTemplate = async (templateId, name) => {
   });
 };
 
-export const upadteRow = async (docId, tableId, rowId, fieldId, newValue) => {
+export const updateRow = async (docId, tableId, rowId, fieldId, newValue) => {
   const url = `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/rows/${rowId}/cells/${fieldId}`;
   //Update a row from coda.io api
 
@@ -50,7 +50,7 @@ export const upadteRow = async (docId, tableId, rowId, fieldId, newValue) => {
 
 export const setAutoOnboardingDone = async (rowId) => {
   const ONBOARDING_DONE = 'Auto-onboarding done';
-  return upadteRow(
+  return updateRow(
     process.env.CODA_PROGRAM_DOC_ID,
     process.env.CODA_APPLICATION_TABLE_ID,
     rowId,
