@@ -13,11 +13,11 @@ const run = async (fullName, email, rowId) => {
   } = await createDocumentFromTemplate(process.env.CODA_PLACEHOLDER_TEMPLATE, fullName);
   await shareDocument(menteePageId, email, 'write');
 
-  // //Send email step through SMTP
-  await sendWelcomeEmail(email);
-
   //Update mentee row on "Program document" with "Auto-onboarding done" status
   await setAutoOnboardingDone(rowId)
+
+  // //Send email step through SMTP
+  await sendWelcomeEmail(email);
 
 };
 
