@@ -32,14 +32,17 @@ export const createDocumentFromTemplate = async (templateId, name) => {
 };
 
 export const updateRow = async (docId, tableId, rowId, fieldId, newValue) => {
-  const url = `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/rows/${rowId}/cells/${fieldId}`;
+  const url = `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/rows/${rowId}`;
+  console.log(url)
   //Update a row from coda.io api
 
   const body = {
     row: {
-      cells: [{ column: fieldId, value: newValue }],
+      cells: [
+        {column: process.env.CODA_STATUS_COLUMN_ID, value: newValue},
+      ],
     },
-  };
+  }
 
   return axios.put(url, body, {
     headers: {
@@ -54,7 +57,7 @@ export const setAutoOnboardingDone = async (rowId) => {
     process.env.CODA_PROGRAM_DOC_ID,
     process.env.CODA_APPLICATION_TABLE_ID,
     rowId,
-    process.env.CODA_AUTO_ONBOARDING_DONE_FIELD_ID,
+    process.env.CODA_STATUS_COLUMN_ID,
     ONBOARDING_DONE
   );
 };
@@ -80,6 +83,24 @@ export const listTables = async (docId) => {
 
 export const listColumns = async (docId, tableId) => {
   const url = `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/columns`;
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.CODA_API_KEY}`,
+    },
+  });
+};
+
+export const listRows = async (docId, tableId) => {
+  const url = `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/rows`;
+  return axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.CODA_API_KEY}`,
+    },
+  });
+};
+
+export const getRowInfo = async (docId, tableId, rowId) => {
+  const url = `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/rows/${rowId}`;
   return axios.get(url, {
     headers: {
       Authorization: `Bearer ${process.env.CODA_API_KEY}`,
